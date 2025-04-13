@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
 import { Button } from '@/components/ui/button';
@@ -108,7 +108,7 @@ const Index = () => {
         className="mt-6 bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
       >
         <Coins className="h-5 w-5" />
-        Mint on Zora
+        Coin on Zora
       </Button>
 
       <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
