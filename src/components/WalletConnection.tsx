@@ -49,21 +49,18 @@ const WalletConnection = () => {
   const walletConnector = connectors[0];
   
   return (
-    <div className="space-y-2">
-      <Button
-        onClick={() => {
-          console.log('Initiating WalletConnect connection...');
-          connect({ connector: walletConnector });
-        }}
-        disabled={!walletConnector?.ready || isPending}
-        variant="outline"
-        className="flex items-center gap-2 w-full"
-      >
-        <Wallet className="h-4 w-4" />
-        {isPending ? 'Connecting...' : 'Connect Wallet'}
-        {!walletConnector?.ready && ' (not available)'}
-      </Button>
-    </div>
+    <Button
+      onClick={() => {
+        console.log('Initiating WalletConnect connection...');
+        connect({ connector: walletConnector });
+      }}
+      disabled={isPending}
+      variant="outline"
+      className="flex items-center gap-2"
+    >
+      <Wallet className="h-4 w-4" />
+      {isPending ? 'Connecting...' : 'Connect Wallet'}
+    </Button>
   );
 };
 
