@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
@@ -18,8 +19,8 @@ const Index = () => {
   const [showMintDialog, setShowMintDialog] = useState(false);
   const [showWalletDialog, setShowWalletDialog] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [artworkName, setArtworkName] = useState('My Base NFT');
-  const [artworkDescription, setArtworkDescription] = useState('A unique NFT minted on Base blockchain');
+  const [artworkName, setArtworkName] = useState('My Zora NFT');
+  const [artworkDescription, setArtworkDescription] = useState('A unique NFT minted on Zora with Base blockchain');
   const [mintedNFT, setMintedNFT] = useState<{
     txHash: string;
     tokenId: number;
@@ -58,7 +59,7 @@ const Index = () => {
       if (result.success) {
         toast({
           title: "Success!",
-          description: `Your NFT has been minted successfully on the Base blockchain!`,
+          description: `Your NFT has been minted successfully on Zora!`,
         });
         
         setMintedNFT({
@@ -79,7 +80,7 @@ const Index = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Something went wrong while minting your NFT on Base blockchain.",
+        description: "Something went wrong while minting your NFT on Zora.",
         variant: "destructive",
       });
     } finally {
@@ -96,7 +97,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-5xl flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Base NFT Minter</h1>
+        <h1 className="text-3xl font-bold">Zora NFT Minter</h1>
         <WalletConnection />
       </div>
       
@@ -107,7 +108,7 @@ const Index = () => {
         className="mt-6 bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
       >
         <Coins className="h-5 w-5" />
-        Mint NFT
+        Mint on Zora
       </Button>
 
       <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
@@ -115,7 +116,7 @@ const Index = () => {
           <DialogHeader>
             <DialogTitle>Connect Wallet Required</DialogTitle>
             <DialogDescription>
-              You need to connect a wallet to mint your artwork as an NFT on Base blockchain.
+              You need to connect a wallet to mint your artwork as an NFT on Zora.
             </DialogDescription>
           </DialogHeader>
           
@@ -138,9 +139,9 @@ const Index = () => {
       <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Mint your NFT on Base blockchain</DialogTitle>
+            <DialogTitle>Mint your NFT on Zora</DialogTitle>
             <DialogDescription>
-              Your artwork will be minted as an NFT on the Base blockchain.
+              Your artwork will be minted as an NFT on Zora using the Base blockchain.
             </DialogDescription>
           </DialogHeader>
           
@@ -206,7 +207,7 @@ const Index = () => {
           <DialogHeader>
             <DialogTitle>Minting Successful!</DialogTitle>
             <DialogDescription>
-              Your artwork has been successfully minted as an NFT on the Base blockchain.
+              Your artwork has been successfully minted as an NFT on Zora using the Base blockchain.
             </DialogDescription>
           </DialogHeader>
           
@@ -244,7 +245,7 @@ const Index = () => {
               className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
             >
               <ExternalLink className="h-4 w-4" />
-              View on Base Explorer
+              View on Zora
             </Button>
           </div>
         </DialogContent>

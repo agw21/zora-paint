@@ -1,6 +1,6 @@
 
 import { createConfig, http } from 'wagmi';
-import { mainnet, sepolia } from 'wagmi/chains';
+import { mainnet, sepolia, base } from 'wagmi/chains';
 import { walletConnect, injected } from 'wagmi/connectors';
 
 // WalletConnect project ID from https://cloud.walletconnect.com/
@@ -8,7 +8,7 @@ import { walletConnect, injected } from 'wagmi/connectors';
 const projectId = 'c9896b40ed2fb29d14db8901b4fe0e65';
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, sepolia],
+  chains: [mainnet, sepolia, base],
   connectors: [
     walletConnect({ 
       projectId: projectId,
@@ -25,6 +25,6 @@ export const wagmiConfig = createConfig({
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
+    [base.id]: http(),
   },
 });
-

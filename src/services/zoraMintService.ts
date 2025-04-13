@@ -12,13 +12,12 @@ const NFT_ABI = [
   "function mint(address to, string memory tokenURI) public returns (uint256)"
 ];
 
-// Base blockchain contract address for NFT minting
-// This would be your actual deployed smart contract address on Base
+// Zora on Base contract address for NFT minting
 const NFT_CONTRACT_ADDRESS = "0x6b8DaB822aBb57C7E94b883b24269a5fe67D06C";
 
 export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: MintParams) => {
   try {
-    console.log('Starting to mint on Base blockchain');
+    console.log('Starting to mint on Zora (Base blockchain)');
     console.log('Name:', name);
     console.log('Description:', description);
 
@@ -74,15 +73,37 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
         }
       }
       
-      // Refresh provider after chain switch
+      // Refresh provider after chain switch - create a new provider instead of reassigning
       provider.destroy();
       const newProvider = new ethers.BrowserProvider(window.ethereum);
-      provider = newProvider;
+      
+      // Create a signer from the new provider
+      const signer = await newProvider.getSigner();
+      
+      return await completeZoraMinting(signer, userAddress, { imageDataUrl, name, description });
     }
     
     // Create a signer
     const signer = await provider.getSigner();
     
+    return await completeZoraMinting(signer, userAddress, { imageDataUrl, name, description });
+    
+  } catch (error) {
+    console.error('Error minting NFT on Zora (Base blockchain):', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to mint NFT on Zora (Base blockchain)'
+    };
+  }
+};
+
+// Helper function to complete the minting process
+async function completeZoraMinting(
+  signer: ethers.Signer, 
+  userAddress: string,
+  { imageDataUrl, name, description }: MintParams
+) {
+  try {
     // Upload image to IPFS or similar service
     // For simplicity, we're just simulating this part
     console.log('Uploading image to decentralized storage...');
@@ -99,11 +120,11 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     console.log('Uploading metadata to decentralized storage...');
     const tokenUri = `ipfs://QmSimulatedMetadataHash`; // In a real implementation, you would upload to IPFS
     
-    // Create contract instance
+    // Create contract instance - this is Zora's contract on Base
     const nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT_ABI, signer);
     
     // Call mint function
-    console.log('Minting NFT...');
+    console.log('Minting NFT on Zora...');
     const tx = await nftContract.mint(userAddress, tokenUri);
     
     console.log('Transaction hash:', tx.hash);
@@ -120,18 +141,21 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     
     console.log('Minted token ID:', tokenId);
     
+    // Generate Zora explorer URL for the minted NFT
+    const zoraExplorerUrl = `https://zora.co/collect/base:${NFT_CONTRACT_ADDRESS}/${tokenId}`;
+    
     return {
       success: true,
       txHash: tx.hash,
       tokenId: tokenId,
-      viewUrl: `https://basescan.org/token/${NFT_CONTRACT_ADDRESS}?a=${tokenId}`,
-      message: 'NFT successfully minted on Base blockchain!'
+      viewUrl: zoraExplorerUrl,
+      message: 'NFT successfully minted on Zora (Base blockchain)!'
     };
   } catch (error) {
-    console.error('Error minting NFT on Base blockchain:', error);
+    console.error('Error completing Zora minting:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to mint NFT on Base blockchain'
+      message: error instanceof Error ? error.message : 'Failed to complete Zora minting process'
     };
   }
-};
+}
