@@ -4,22 +4,32 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { WagmiProvider, createConfig } from 'wagmi';
+import { WagmiProvider } from 'wagmi';
 import { wagmiConfig } from './lib/wagmiConfig';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// Create QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
-// Initialize Web3Modal right after importing wagmiConfig
+// Initialize Web3Modal with proper configuration
 createWeb3Modal({
   wagmiConfig,
   projectId: 'c9896b40ed2fb29d14db8901b4fe0e65',
   themeMode: 'light',
-  defaultChain: wagmiConfig.chains[0], // Use the first chain as default
-  featuredWalletIds: [], // Empty array to show all wallets
-  includeWalletIds: [], // Empty array to include all wallets
+  defaultChain: wagmiConfig.chains[0],
+  featuredWalletIds: [],
+  includeWalletIds: [],
+  termsOfServiceUrl: '', // Add your terms URL if you have one
+  privacyPolicyUrl: '',  // Add your privacy policy URL if you have one
 });
 
 const App = () => (

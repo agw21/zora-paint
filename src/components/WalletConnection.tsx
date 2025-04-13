@@ -1,30 +1,73 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { Button } from '@/components/ui/button';
-import { Wallet, LogOut } from 'lucide-react';
+import { Wallet, LogOut, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const WalletConnection = () => {
   const { toast } = useToast();
-  const { address, isConnected, status } = useAccount();
+  const { address, isConnected } = useAccount();
   const { connectors, connect, error: connectError, isPending } = useConnect();
   const { disconnect } = useDisconnect();
+  const [isConnecting, setIsConnecting] = useState(false);
 
-  // Log connector details for debugging
+  // Handle connection errors
   useEffect(() => {
-    console.log('Available Connectors:', connectors);
-    console.log('Connection Status:', status);
-    
-    if (connectError) {
+    if (connectError && isConnecting) {
       console.error('Connection error:', connectError);
       toast({
         title: "Wallet Connection Error",
-        description: connectError.message,
+        description: connectError.message || "Failed to connect wallet. Please try again.",
         variant: "destructive"
       });
+      setIsConnecting(false);
     }
-  }, [connectors, status, connectError, toast]);
+  }, [connectError, toast, isConnecting]);
+
+  // Reset connecting state when connection completes
+  useEffect(() => {
+    if (isConnected && isConnecting) {
+      setIsConnecting(false);
+      toast({
+        title: "Wallet Connected",
+        description: "Your wallet has been successfully connected!",
+      });
+    }
+  }, [isConnected, toast, isConnecting]);
+
+  const handleConnect = () => {
+    try {
+      setIsConnecting(true);
+      console.log('Available connectors:', connectors);
+      
+      // Try to find Injected connector (MetaMask) first
+      const injectedConnector = connectors.find(c => c.id === 'injected');
+      
+      // Fall back to WalletConnect if no injected connector
+      const connector = injectedConnector || connectors[0];
+      
+      if (connector) {
+        console.log(`Initiating connection with ${connector.id}...`);
+        connect({ connector });
+      } else {
+        toast({
+          title: "Connection Error",
+          description: "No compatible wallet connectors found",
+          variant: "destructive"
+        });
+        setIsConnecting(false);
+      }
+    } catch (err) {
+      console.error('Error initiating wallet connection:', err);
+      toast({
+        title: "Connection Error",
+        description: "Failed to initiate wallet connection",
+        variant: "destructive"
+      });
+      setIsConnecting(false);
+    }
+  };
 
   if (isConnected) {
     return (
@@ -44,24 +87,28 @@ const WalletConnection = () => {
       </div>
     );
   }
-
-  // Find the WalletConnect connector
-  const walletConnector = connectors[0];
   
   return (
     <Button
-      onClick={() => {
-        console.log('Initiating WalletConnect connection...');
-        connect({ connector: walletConnector });
-      }}
-      disabled={isPending}
+      onClick={handleConnect}
+      disabled={isPending || isConnecting}
       variant="outline"
       className="flex items-center gap-2"
     >
-      <Wallet className="h-4 w-4" />
-      {isPending ? 'Connecting...' : 'Connect Wallet'}
+      {isPending || isConnecting ? (
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Connecting...
+        </>
+      ) : (
+        <>
+          <Wallet className="h-4 w-4" />
+          Connect Wallet
+        </>
+      )}
     </Button>
   );
 };
 
 export default WalletConnection;
+
