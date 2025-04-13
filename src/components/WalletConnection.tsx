@@ -6,7 +6,7 @@ import { Wallet, LogOut } from 'lucide-react';
 
 const WalletConnection = () => {
   const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
+  const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
 
   if (isConnected) {
@@ -40,7 +40,7 @@ const WalletConnection = () => {
         >
           <Wallet className="h-4 w-4" />
           Connect Wallet
-          {connector.id === 'injected' && !connector.ready && ' (not installed)'}
+          {!connector.ready && ' (not installed)'}
         </Button>
       ))}
     </div>
