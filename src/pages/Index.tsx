@@ -9,12 +9,15 @@ import { Coins, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { useAccount } from 'wagmi';
 
 const Index = () => {
   const { toast } = useToast();
+  const { isConnected } = useAccount();
   const [canvasDataUrl, setCanvasDataUrl] = useState<string | null>(null);
   const [isMinting, setIsMinting] = useState(false);
   const [showMintDialog, setShowMintDialog] = useState(false);
+  const [showWalletDialog, setShowWalletDialog] = useState(false);
   const [artworkName, setArtworkName] = useState('My Zora Coin');
   const [artworkDescription, setArtworkDescription] = useState('A unique coin created on Zora Paint');
 
@@ -25,6 +28,12 @@ const Index = () => {
         description: "Please draw something on the canvas first.",
         variant: "destructive",
       });
+      return;
+    }
+    
+    // Check if wallet is connected
+    if (!isConnected) {
+      setShowWalletDialog(true);
       return;
     }
     
@@ -83,6 +92,33 @@ const Index = () => {
         Coin Artwork
       </Button>
 
+      {/* Wallet Connection Dialog */}
+      <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Connect Wallet Required</DialogTitle>
+            <DialogDescription>
+              You need to connect a wallet to mint your artwork as a coin on Zora.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex justify-center py-6">
+            <WalletConnection />
+          </div>
+          
+          <div className="flex justify-end">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowWalletDialog(false)} 
+              className="mr-2"
+            >
+              Cancel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Mint Dialog */}
       <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
