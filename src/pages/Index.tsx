@@ -26,6 +26,7 @@ const Index = () => {
   } | null>(null);
   const [artworkName, setArtworkName] = useState('My Digital Coin');
   const [artworkDescription, setArtworkDescription] = useState('A unique coin artwork minted on Zora');
+  const [artworkSymbol, setArtworkSymbol] = useState('MDC');
   const [showMintDialog, setShowMintDialog] = useState(false);
 
   const handleCoinArtwork = async () => {
@@ -53,7 +54,8 @@ const Index = () => {
       const result = await mintCoinArtwork({
         imageDataUrl: canvasDataUrl,
         name: artworkName,
-        description: artworkDescription
+        description: artworkDescription,
+        symbol: artworkSymbol
       });
       
       if (result.success) {
@@ -163,6 +165,17 @@ const Index = () => {
                 value={artworkDescription} 
                 onChange={(e) => setArtworkDescription(e.target.value)} 
                 placeholder="A unique coin artwork on Zora"
+              />
+            </div>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="symbol">Coin Symbol</Label>
+              <Input 
+                id="symbol" 
+                value={artworkSymbol} 
+                onChange={(e) => setArtworkSymbol(e.target.value)} 
+                placeholder="MDC"
+                maxLength={5}
               />
             </div>
             

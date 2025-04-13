@@ -5,14 +5,15 @@ interface MintParams {
   imageDataUrl: string;
   name: string;
   description: string;
+  symbol?: string;
 }
 
-// This is a demo implementation that simulates coin artwork creation
-export const mintCoinArtwork = async ({ imageDataUrl, name, description }: MintParams) => {
+export const mintCoinArtwork = async ({ imageDataUrl, name, description, symbol }: MintParams) => {
   try {
     console.log('Demo mode: Simulating coin artwork creation');
     console.log('Coin Artwork Name:', name);
     console.log('Coin Artwork Description:', description);
+    console.log('Coin Artwork Symbol:', symbol);
     
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -25,13 +26,6 @@ export const mintCoinArtwork = async ({ imageDataUrl, name, description }: MintP
     const mockContractAddress = '0x' + Array(40).fill(0).map(() => 
       Math.floor(Math.random() * 16).toString(16)).join('');
     
-    // Create coin artwork symbol from name (first letters of each word)
-    const symbol = name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase();
-    
     console.log('Coin artwork created successfully');
     console.log(`Mock Transaction Hash: ${mockTxHash}`);
     console.log(`Mock Contract Address: ${mockContractAddress}`);
@@ -40,13 +34,12 @@ export const mintCoinArtwork = async ({ imageDataUrl, name, description }: MintP
       success: true,
       txHash: mockTxHash,
       contractAddress: mockContractAddress,
-      symbol,
+      symbol: symbol || 'MDC', // Use provided symbol or default
       name,
       initialSupply: '1000',
       viewUrl: `https://zora.co/collect/${mockTxHash}`,
       message: 'Demo: Coin artwork creation simulated successfully!'
     };
-    
   } catch (error) {
     console.error('Error in coin artwork creation:', error);
     return {
@@ -55,4 +48,3 @@ export const mintCoinArtwork = async ({ imageDataUrl, name, description }: MintP
     };
   }
 };
-
