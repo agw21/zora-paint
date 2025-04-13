@@ -15,8 +15,8 @@ const Index = () => {
   const [canvasDataUrl, setCanvasDataUrl] = useState<string | null>(null);
   const [isMinting, setIsMinting] = useState(false);
   const [showMintDialog, setShowMintDialog] = useState(false);
-  const [artworkName, setArtworkName] = useState('My Zora Artwork');
-  const [artworkDescription, setArtworkDescription] = useState('A unique artwork created on Zora Paint');
+  const [artworkName, setArtworkName] = useState('My Zora Coin');
+  const [artworkDescription, setArtworkDescription] = useState('A unique coin created on Zora Paint');
 
   const handleCoinArtwork = async () => {
     if (!canvasDataUrl) {
@@ -45,7 +45,7 @@ const Index = () => {
       if (result.success) {
         toast({
           title: "Success!",
-          description: `Your artwork has been minted successfully. Transaction hash: ${result.txHash}`,
+          description: `Your coin has been minted successfully. Transaction hash: ${result.txHash}`,
         });
         setShowMintDialog(false);
       } else {
@@ -58,7 +58,7 @@ const Index = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Something went wrong while minting your artwork.",
+        description: "Something went wrong while minting your coin.",
         variant: "destructive",
       });
     } finally {
@@ -86,15 +86,15 @@ const Index = () => {
       <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Mint your artwork on Zora</DialogTitle>
+            <DialogTitle>Mint your coin on Zora</DialogTitle>
             <DialogDescription>
-              Your artwork will be minted as an NFT on the Zora network.
+              Your artwork will be minted as a coin on the Zora network.
             </DialogDescription>
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Artwork Name</Label>
+              <Label htmlFor="name">Coin Name</Label>
               <Input 
                 id="name" 
                 value={artworkName} 
@@ -115,7 +115,7 @@ const Index = () => {
               <div className="flex justify-center">
                 <img 
                   src={canvasDataUrl} 
-                  alt="Your artwork preview" 
+                  alt="Your coin preview" 
                   className="max-w-full max-h-40 border rounded"
                 />
               </div>
@@ -142,7 +142,7 @@ const Index = () => {
                   Minting...
                 </>
               ) : (
-                'Mint NFT'
+                'Mint Coin'
               )}
             </Button>
           </div>

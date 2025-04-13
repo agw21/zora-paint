@@ -12,10 +12,10 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     // This is a simplified version - in a real implementation, we would:
     // 1. Upload the image to IPFS or another decentralized storage
     // 2. Create metadata with the image URL, name, description
-    // 3. Call Zora's minting contract with this metadata
+    // 3. Call Zora's coin minting contract with this metadata
     
     // For demonstration purposes, we're just returning a mock transaction
-    console.log('Minting NFT with the following details:');
+    console.log('Minting Coin with the following details:');
     console.log('Image data:', imageDataUrl.substring(0, 50) + '...');
     console.log('Name:', name);
     console.log('Description:', description);
@@ -26,13 +26,13 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     return {
       success: true,
       txHash: `0x${Math.random().toString(16).slice(2)}`,
-      message: 'NFT minted successfully!'
+      message: 'Coin minted successfully!'
     };
   } catch (error) {
-    console.error('Error minting NFT:', error);
+    console.error('Error minting coin:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to mint NFT'
+      message: error instanceof Error ? error.message : 'Failed to mint coin'
     };
   }
 };
