@@ -19,8 +19,8 @@ const Index = () => {
   const [showMintDialog, setShowMintDialog] = useState(false);
   const [showWalletDialog, setShowWalletDialog] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [artworkName, setArtworkName] = useState('My Zora NFT');
-  const [artworkDescription, setArtworkDescription] = useState('A unique NFT minted on Zora with Base blockchain');
+  const [artworkName, setArtworkName] = useState('My Zora Coin');
+  const [artworkDescription, setArtworkDescription] = useState('A unique coin minted on Zora with Base blockchain');
   const [mintedNFT, setMintedNFT] = useState<{
     txHash: string;
     tokenId: number;
