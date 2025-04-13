@@ -1,4 +1,3 @@
-
 import { ethers } from 'ethers';
 
 interface MintParams {
@@ -12,8 +11,8 @@ const ZORA_FACTORY_ABI = [
   "function createToken(string memory name, string memory symbol, uint256 initialSupply) external returns (address)"
 ];
 
-// Corrected Zora Factory Contract address on Base
-const ZORA_FACTORY_ADDRESS = "0x777777c338D93e2C7adf08D102d45CA7CC4Ed021"; // Fixed checksum
+// Updated Zora Factory Contract address on Base
+const ZORA_FACTORY_ADDRESS = "0xbECAe78D441FBa11017bB7A8798D018b0977F76d";
 
 export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: MintParams) => {
   try {
