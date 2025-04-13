@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
@@ -96,7 +97,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-5xl flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Zora Coin Minter</h1>
+        <h1 className="text-3xl font-bold">Zora Paint</h1>
         <WalletConnection />
       </div>
       
