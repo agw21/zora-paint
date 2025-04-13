@@ -12,8 +12,8 @@ const ZORA_FACTORY_ABI = [
   "function createToken(string memory name, string memory symbol, uint256 initialSupply) external returns (address)"
 ];
 
-// Zora Factory Contract address on Base
-const ZORA_FACTORY_ADDRESS = "0x777777c338d93e2C7adf08D102d45CA7CC4Ed021"; // This is a placeholder, replace with actual Zora factory address
+// Corrected Zora Factory Contract address on Base
+const ZORA_FACTORY_ADDRESS = "0x777777c338D93e2C7adf08D102d45CA7CC4Ed021"; // Fixed checksum
 
 export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: MintParams) => {
   try {
