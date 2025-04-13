@@ -1,8 +1,11 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
-const DrawingCanvas: React.FC = () => {
+interface DrawingCanvasProps {
+  onCanvasDataUrl?: (dataUrl: string) => void;
+}
+
+const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onCanvasDataUrl }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [color, setColor] = useState('#000000');
@@ -17,6 +20,19 @@ const DrawingCanvas: React.FC = () => {
       context.lineWidth = lineWidth;
     }
   }, [color, lineWidth]);
+
+  useEffect(() => {
+    if (onCanvasDataUrl && canvasRef.current) {
+      const timeoutId = setTimeout(() => {
+        const dataUrl = canvasRef.current?.toDataURL('image/png');
+        if (dataUrl) {
+          onCanvasDataUrl(dataUrl);
+        }
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isDrawing, onCanvasDataUrl]);
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -58,6 +74,11 @@ const DrawingCanvas: React.FC = () => {
     const context = canvas?.getContext('2d');
     if (context && canvas) {
       context.clearRect(0, 0, canvas.width, canvas.height);
+      
+      if (onCanvasDataUrl) {
+        const dataUrl = canvas.toDataURL('image/png');
+        onCanvasDataUrl(dataUrl);
+      }
     }
   };
 
@@ -97,4 +118,3 @@ const DrawingCanvas: React.FC = () => {
 };
 
 export default DrawingCanvas;
-
