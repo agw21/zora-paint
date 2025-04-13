@@ -28,8 +28,7 @@ createWeb3Modal({
   defaultChain: wagmiConfig.chains[0],
   featuredWalletIds: [],
   includeWalletIds: [],
-  termsOfServiceUrl: '', // Add your terms URL if you have one
-  privacyPolicyUrl: '',  // Add your privacy policy URL if you have one
+  // Removing unsupported properties
 });
 
 const App = () => (
