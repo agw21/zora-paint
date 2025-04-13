@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
@@ -59,7 +58,7 @@ const Index = () => {
       if (result.success) {
         toast({
           title: "Success!",
-          description: `Your NFT has been minted successfully on Zora!`,
+          description: `Your artwork has been coined successfully on Zora!`,
         });
         
         setMintedNFT({
@@ -72,7 +71,7 @@ const Index = () => {
         setShowSuccessDialog(true);
       } else {
         toast({
-          title: "Minting failed",
+          title: "Coining failed",
           description: result.message,
           variant: "destructive",
         });
@@ -80,7 +79,7 @@ const Index = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Something went wrong while minting your NFT on Zora.",
+        description: "Something went wrong while coining your artwork on Zora.",
         variant: "destructive",
       });
     } finally {
@@ -97,7 +96,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-5xl flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Zora NFT Minter</h1>
+        <h1 className="text-3xl font-bold">Zora Coin Minter</h1>
         <WalletConnection />
       </div>
       
@@ -116,7 +115,7 @@ const Index = () => {
           <DialogHeader>
             <DialogTitle>Connect Wallet Required</DialogTitle>
             <DialogDescription>
-              You need to connect a wallet to mint your artwork as an NFT on Zora.
+              You need to connect a wallet to coin your artwork on Zora.
             </DialogDescription>
           </DialogHeader>
           
@@ -139,15 +138,15 @@ const Index = () => {
       <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Mint your NFT on Zora</DialogTitle>
+            <DialogTitle>Coin your artwork on Zora</DialogTitle>
             <DialogDescription>
-              Your artwork will be minted as an NFT on Zora using the Base blockchain.
+              Your artwork will be coined as an ERC20 token on Zora using the Base blockchain.
             </DialogDescription>
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">NFT Name</Label>
+              <Label htmlFor="name">Coin Name</Label>
               <Input 
                 id="name" 
                 value={artworkName} 
@@ -168,7 +167,7 @@ const Index = () => {
               <div className="flex justify-center">
                 <img 
                   src={canvasDataUrl} 
-                  alt="Your NFT preview" 
+                  alt="Your artwork preview" 
                   className="max-w-full max-h-40 border rounded"
                 />
               </div>
@@ -192,10 +191,10 @@ const Index = () => {
               {isMinting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Minting...
+                  Coining...
                 </>
               ) : (
-                'Mint NFT'
+                'Coin Artwork'
               )}
             </Button>
           </div>
@@ -205,9 +204,9 @@ const Index = () => {
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Minting Successful!</DialogTitle>
+            <DialogTitle>Coining Successful!</DialogTitle>
             <DialogDescription>
-              Your artwork has been successfully minted as an NFT on Zora using the Base blockchain.
+              Your artwork has been successfully coined as an ERC20 token on Zora using the Base blockchain.
             </DialogDescription>
           </DialogHeader>
           
@@ -216,7 +215,7 @@ const Index = () => {
               <div className="flex justify-center">
                 <img 
                   src={canvasDataUrl} 
-                  alt="Your minted NFT" 
+                  alt="Your coined artwork" 
                   className="max-w-full max-h-40 border rounded"
                 />
               </div>
