@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
@@ -21,9 +20,12 @@ const Index = () => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [artworkName, setArtworkName] = useState('My Zora Coin');
   const [artworkDescription, setArtworkDescription] = useState('A unique coin minted on Zora with Base blockchain');
-  const [mintedNFT, setMintedNFT] = useState<{
+  const [mintedToken, setMintedToken] = useState<{
     txHash: string;
-    tokenId: number;
+    contractAddress: string;
+    symbol: string;
+    name: string;
+    initialSupply: string;
     viewUrl: string;
   } | null>(null);
 
@@ -59,12 +61,15 @@ const Index = () => {
       if (result.success) {
         toast({
           title: "Success!",
-          description: `Your artwork has been coined successfully on Zora!`,
+          description: `Your ERC20 token has been created successfully!`,
         });
         
-        setMintedNFT({
+        setMintedToken({
           txHash: result.txHash,
-          tokenId: result.tokenId,
+          contractAddress: result.contractAddress,
+          symbol: result.symbol,
+          name: result.name,
+          initialSupply: result.initialSupply,
           viewUrl: result.viewUrl
         });
         
@@ -72,7 +77,7 @@ const Index = () => {
         setShowSuccessDialog(true);
       } else {
         toast({
-          title: "Coining failed",
+          title: "Token creation failed",
           description: result.message,
           variant: "destructive",
         });
@@ -80,7 +85,7 @@ const Index = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Something went wrong while coining your artwork on Zora.",
+        description: "Something went wrong while creating your ERC20 token.",
         variant: "destructive",
       });
     } finally {
@@ -88,9 +93,9 @@ const Index = () => {
     }
   };
 
-  const handleViewNFT = () => {
-    if (mintedNFT?.viewUrl) {
-      window.open(mintedNFT.viewUrl, '_blank');
+  const handleViewToken = () => {
+    if (mintedToken?.viewUrl) {
+      window.open(mintedToken.viewUrl, '_blank');
     }
   };
 
@@ -108,7 +113,7 @@ const Index = () => {
         className="mt-6 bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
       >
         <Coins className="h-5 w-5" />
-        Coin on Zora
+        Coin Artwork
       </Button>
 
       <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
@@ -116,7 +121,7 @@ const Index = () => {
           <DialogHeader>
             <DialogTitle>Connect Wallet Required</DialogTitle>
             <DialogDescription>
-              You need to connect a wallet to coin your artwork on Zora.
+              You need to connect a wallet to create your ERC20 token.
             </DialogDescription>
           </DialogHeader>
           
@@ -139,19 +144,20 @@ const Index = () => {
       <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Coin your artwork on Zora</DialogTitle>
+            <DialogTitle>Create ERC20 Token</DialogTitle>
             <DialogDescription>
-              Your artwork will be coined as an ERC20 token on Zora using the Base blockchain.
+              Your artwork will be used as the visual for your new ERC20 token on Base blockchain.
             </DialogDescription>
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Coin Name</Label>
+              <Label htmlFor="name">Token Name</Label>
               <Input 
                 id="name" 
                 value={artworkName} 
                 onChange={(e) => setArtworkName(e.target.value)} 
+                placeholder="My Zora Coin"
               />
             </div>
             
@@ -161,6 +167,7 @@ const Index = () => {
                 id="description" 
                 value={artworkDescription} 
                 onChange={(e) => setArtworkDescription(e.target.value)} 
+                placeholder="A custom ERC20 token on Base blockchain"
               />
             </div>
             
@@ -168,7 +175,7 @@ const Index = () => {
               <div className="flex justify-center">
                 <img 
                   src={canvasDataUrl} 
-                  alt="Your artwork preview" 
+                  alt="Token artwork preview" 
                   className="max-w-full max-h-40 border rounded"
                 />
               </div>
@@ -192,10 +199,10 @@ const Index = () => {
               {isMinting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Coining...
+                  Creating...
                 </>
               ) : (
-                'Coin Artwork'
+                'Create Token'
               )}
             </Button>
           </div>
@@ -205,9 +212,9 @@ const Index = () => {
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Coining Successful!</DialogTitle>
+            <DialogTitle>Token Created Successfully!</DialogTitle>
             <DialogDescription>
-              Your artwork has been successfully coined as an ERC20 token on Zora using the Base blockchain.
+              Your ERC20 token has been created on the Base blockchain.
             </DialogDescription>
           </DialogHeader>
           
@@ -216,20 +223,35 @@ const Index = () => {
               <div className="flex justify-center">
                 <img 
                   src={canvasDataUrl} 
-                  alt="Your coined artwork" 
+                  alt="Token artwork" 
                   className="max-w-full max-h-40 border rounded"
                 />
               </div>
             )}
             
             <div className="grid gap-1">
-              <p className="text-sm font-medium">Transaction Hash:</p>
-              <p className="text-xs text-gray-500 break-all">{mintedNFT?.txHash}</p>
+              <p className="text-sm font-medium">Token Name:</p>
+              <p className="text-xs text-gray-500">{mintedToken?.name}</p>
+            </div>
+
+            <div className="grid gap-1">
+              <p className="text-sm font-medium">Token Symbol:</p>
+              <p className="text-xs text-gray-500">{mintedToken?.symbol}</p>
             </div>
             
             <div className="grid gap-1">
-              <p className="text-sm font-medium">Token ID:</p>
-              <p className="text-xs text-gray-500">{mintedNFT?.tokenId}</p>
+              <p className="text-sm font-medium">Initial Supply:</p>
+              <p className="text-xs text-gray-500">{mintedToken?.initialSupply} {mintedToken?.symbol}</p>
+            </div>
+            
+            <div className="grid gap-1">
+              <p className="text-sm font-medium">Contract Address:</p>
+              <p className="text-xs text-gray-500 break-all">{mintedToken?.contractAddress}</p>
+            </div>
+            
+            <div className="grid gap-1">
+              <p className="text-sm font-medium">Transaction Hash:</p>
+              <p className="text-xs text-gray-500 break-all">{mintedToken?.txHash}</p>
             </div>
           </div>
           
@@ -241,11 +263,11 @@ const Index = () => {
               Close
             </Button>
             <Button 
-              onClick={handleViewNFT}
+              onClick={handleViewToken}
               className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
             >
               <ExternalLink className="h-4 w-4" />
-              View on Zora
+              View on BaseScan
             </Button>
           </div>
         </DialogContent>
