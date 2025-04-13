@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
 
-## Project info
+# Zora Paint: Digital Coin Artwork Creator
 
-**URL**: https://lovable.dev/projects/5369c6e7-1fba-465c-899f-edee86908bfc
+## Project Overview
 
-## How can I edit this code?
+Zora Paint is an innovative web application that allows users to create unique digital coin artwork using a drawing canvas and blockchain technology. With this app, you can:
 
-There are several ways of editing your application.
+- Draw custom artwork using an intuitive drawing interface
+- Mint your artwork as a unique digital coin on the Zora network
+- Customize your coin's name, description, and symbol
+- Connect your web3 wallet to create and mint digital assets
 
-**Use Lovable**
+## Key Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5369c6e7-1fba-465c-899f-edee86908bfc) and start prompting.
+- Interactive drawing canvas with color and brush size customization
+- Wallet connection using Web3Modal
+- One-click coin artwork creation
+- Real-time preview of minted coin details
+- Simulated blockchain minting process
 
-Changes made via Lovable will be committed automatically to this repo.
+## Technologies Used
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
 - React
-- shadcn-ui
+- TypeScript
+- Vite
 - Tailwind CSS
+- shadcn/ui
+- wagmi
+- Web3Modal
+- Zora blockchain integration (simulated in this demo)
 
-## How can I deploy this project?
+## Getting Started
 
-Simply open [Lovable](https://lovable.dev/projects/5369c6e7-1fba-465c-899f-edee86908bfc) and click on Share -> Publish.
+### Prerequisites
 
-## Can I connect a custom domain to my Lovable project?
+- Node.js (version 18+)
+- npm or bun
 
-Yes, you can!
+### Installation
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Clone the repository
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## How to Use
+
+1. Connect your web3 wallet
+2. Use the drawing canvas to create your artwork
+3. Click "Coin Artwork" to open the minting dialog
+4. Customize your coin's name, description, and symbol
+5. Mint your unique digital coin artwork
+
+## Deployment
+
+Deploy easily using Lovable's one-click publish feature.
+
+## Contributing
+
+Feel free to open issues or submit pull requests to improve the project.
+
+## License
+
+[Specify your license here]
+
