@@ -1,13 +1,29 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { Button } from '@/components/ui/button';
 import { Wallet, LogOut } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const WalletConnection = () => {
-  const { address, isConnected } = useAccount();
-  const { connectors, connect } = useConnect();
+  const { toast } = useToast();
+  const { address, isConnected, status } = useAccount();
+  const { connectors, connect, error: connectError } = useConnect();
   const { disconnect } = useDisconnect();
+
+  // Log connector details for debugging
+  useEffect(() => {
+    console.log('Available Connectors:', connectors);
+    console.log('Connection Status:', status);
+    
+    if (connectError) {
+      toast({
+        title: "Wallet Connection Error",
+        description: connectError.message,
+        variant: "destructive"
+      });
+    }
+  }, [connectors, status, connectError]);
 
   if (isConnected) {
     return (
@@ -29,17 +45,20 @@ const WalletConnection = () => {
   }
 
   return (
-    <div>
+    <div className="space-y-2">
       {connectors.map((connector) => (
         <Button
           key={connector.id}
-          onClick={() => connect({ connector })}
+          onClick={() => {
+            console.log(`Attempting to connect with ${connector.name}`);
+            connect({ connector });
+          }}
           disabled={!connector.ready}
           variant="outline"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 w-full"
         >
           <Wallet className="h-4 w-4" />
-          Connect Wallet
+          Connect {connector.name}
           {!connector.ready && ' (not installed)'}
         </Button>
       ))}
