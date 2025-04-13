@@ -7,20 +7,14 @@ import { useToast } from '@/hooks/use-toast';
 import { mintCoinArtwork } from '@/services/zoraMintService';
 import { Coins, Loader2, ExternalLink } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { useAccount } from 'wagmi';
 
 const Index = () => {
   const { toast } = useToast();
   const { isConnected } = useAccount();
   const [canvasDataUrl, setCanvasDataUrl] = useState<string | null>(null);
-  const [isMinting, setIsMinting] = useState(false);
-  const [showMintDialog, setShowMintDialog] = useState(false);
   const [showWalletDialog, setShowWalletDialog] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [artworkName, setArtworkName] = useState('My Digital Coin');
-  const [artworkDescription, setArtworkDescription] = useState('A unique coin artwork minted on Zora');
   const [mintedCoin, setMintedCoin] = useState<{
     txHash: string;
     contractAddress: string;
@@ -45,18 +39,18 @@ const Index = () => {
       return;
     }
     
-    setShowMintDialog(true);
+    // Directly proceed with minting
+    await handleMintSubmit();
   };
 
   const handleMintSubmit = async () => {
     if (!canvasDataUrl) return;
     
-    setIsMinting(true);
     try {
       const result = await mintCoinArtwork({
         imageDataUrl: canvasDataUrl,
-        name: artworkName,
-        description: artworkDescription
+        name: 'My Digital Coin',
+        description: 'A unique coin artwork minted on Zora'
       });
       
       if (result.success) {
@@ -74,7 +68,6 @@ const Index = () => {
           viewUrl: result.viewUrl
         });
         
-        setShowMintDialog(false);
         setShowSuccessDialog(true);
       } else {
         toast({
@@ -89,8 +82,6 @@ const Index = () => {
         description: "Something went wrong while creating your coin artwork.",
         variant: "destructive",
       });
-    } finally {
-      setIsMinting(false);
     }
   };
 
@@ -137,74 +128,6 @@ const Index = () => {
               className="mr-2"
             >
               Cancel
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create Coin Artwork</DialogTitle>
-            <DialogDescription>
-              Your artwork will be used as the visual for your unique digital coin.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Coin Name</Label>
-              <Input 
-                id="name" 
-                value={artworkName} 
-                onChange={(e) => setArtworkName(e.target.value)} 
-                placeholder="My Digital Coin"
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
-              <Input 
-                id="description" 
-                value={artworkDescription} 
-                onChange={(e) => setArtworkDescription(e.target.value)} 
-                placeholder="A unique coin artwork on Zora"
-              />
-            </div>
-            
-            {canvasDataUrl && (
-              <div className="flex justify-center">
-                <img 
-                  src={canvasDataUrl} 
-                  alt="Coin artwork preview" 
-                  className="max-w-full max-h-40 border rounded"
-                />
-              </div>
-            )}
-          </div>
-          
-          <div className="flex justify-end">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowMintDialog(false)} 
-              className="mr-2"
-              disabled={isMinting}
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleMintSubmit} 
-              disabled={isMinting} 
-              className="bg-purple-600 hover:bg-purple-700 text-white"
-            >
-              {isMinting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating...
-                </>
-              ) : (
-                'Create Coin'
-              )}
             </Button>
           </div>
         </DialogContent>
