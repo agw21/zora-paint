@@ -14,7 +14,6 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     // 2. Create metadata with the image URL, name, description
     // 3. Call Zora's coin minting contract with this metadata
     
-    // For demonstration purposes, we're just returning a mock transaction
     console.log('Minting Coin with the following details:');
     console.log('Image data:', imageDataUrl.substring(0, 50) + '...');
     console.log('Name:', name);
@@ -23,9 +22,17 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     // Simulate a delay for the minting process
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
+    // Generate a mock transaction hash
+    const txHash = `0x${Math.random().toString(16).slice(2)}`;
+    
+    // Mock Zora NFT ID - in a real implementation this would come from the blockchain event
+    const tokenId = Math.floor(Math.random() * 1000000);
+    
     return {
       success: true,
-      txHash: `0x${Math.random().toString(16).slice(2)}`,
+      txHash: txHash,
+      tokenId: tokenId,
+      viewUrl: `https://zora.co/collect/eth:0x06B8DaB822aBb57C7E94b883b24269a5fe67D06C/${tokenId}`,
       message: 'Coin minted successfully!'
     };
   } catch (error) {
@@ -36,3 +43,4 @@ export const mintArtworkOnZora = async ({ imageDataUrl, name, description }: Min
     };
   }
 };
+

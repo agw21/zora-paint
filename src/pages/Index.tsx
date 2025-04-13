@@ -5,7 +5,7 @@ import WalletConnection from '@/components/WalletConnection';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { mintArtworkOnZora } from '@/services/zoraMintService';
-import { Coins, Loader2 } from 'lucide-react';
+import { Coins, Loader2, ExternalLink } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -18,8 +18,14 @@ const Index = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [showMintDialog, setShowMintDialog] = useState(false);
   const [showWalletDialog, setShowWalletDialog] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [artworkName, setArtworkName] = useState('My Zora Coin');
   const [artworkDescription, setArtworkDescription] = useState('A unique coin created on Zora Paint');
+  const [mintedNFT, setMintedNFT] = useState<{
+    txHash: string;
+    tokenId: number;
+    viewUrl: string;
+  } | null>(null);
 
   const handleCoinArtwork = async () => {
     if (!canvasDataUrl) {
@@ -54,9 +60,19 @@ const Index = () => {
       if (result.success) {
         toast({
           title: "Success!",
-          description: `Your coin has been minted successfully. Transaction hash: ${result.txHash}`,
+          description: `Your coin has been minted successfully!`,
         });
+        
+        // Store the minted NFT info
+        setMintedNFT({
+          txHash: result.txHash,
+          tokenId: result.tokenId,
+          viewUrl: result.viewUrl
+        });
+        
+        // Close mint dialog and open success dialog
         setShowMintDialog(false);
+        setShowSuccessDialog(true);
       } else {
         toast({
           title: "Minting failed",
@@ -72,6 +88,12 @@ const Index = () => {
       });
     } finally {
       setIsMinting(false);
+    }
+  };
+
+  const handleViewNFT = () => {
+    if (mintedNFT?.viewUrl) {
+      window.open(mintedNFT.viewUrl, '_blank');
     }
   };
 
@@ -180,6 +202,56 @@ const Index = () => {
               ) : (
                 'Mint Coin'
               )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success Dialog with View NFT option */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Minting Successful!</DialogTitle>
+            <DialogDescription>
+              Your artwork has been successfully minted as a Zora NFT.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            {canvasDataUrl && (
+              <div className="flex justify-center">
+                <img 
+                  src={canvasDataUrl} 
+                  alt="Your minted coin" 
+                  className="max-w-full max-h-40 border rounded"
+                />
+              </div>
+            )}
+            
+            <div className="grid gap-1">
+              <p className="text-sm font-medium">Transaction Hash:</p>
+              <p className="text-xs text-gray-500 break-all">{mintedNFT?.txHash}</p>
+            </div>
+            
+            <div className="grid gap-1">
+              <p className="text-sm font-medium">Token ID:</p>
+              <p className="text-xs text-gray-500">{mintedNFT?.tokenId}</p>
+            </div>
+          </div>
+          
+          <div className="flex justify-end gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowSuccessDialog(false)}
+            >
+              Close
+            </Button>
+            <Button 
+              onClick={handleViewNFT}
+              className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
+            >
+              <ExternalLink className="h-4 w-4" />
+              View on Zora
             </Button>
           </div>
         </DialogContent>
