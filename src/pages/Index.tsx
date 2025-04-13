@@ -5,7 +5,7 @@ import WalletConnection from '@/components/WalletConnection';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { mintArtworkOnZora } from '@/services/zoraMintService';
-import { Coin, Loader2 } from 'lucide-react';
+import { Coins, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -79,7 +79,7 @@ const Index = () => {
         onClick={handleCoinArtwork} 
         className="mt-6 bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
       >
-        <Coin className="h-5 w-5" />
+        <Coins className="h-5 w-5" />
         Coin Artwork
       </Button>
 
