@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
@@ -113,7 +114,7 @@ const Index = () => {
         className="mt-6 bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
       >
         <Coins className="h-5 w-5" />
-        Create Coin Artwork
+        Coin Artwork
       </Button>
 
       <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
