@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DrawingCanvas from '@/components/DrawingCanvas';
 import WalletConnection from '@/components/WalletConnection';
@@ -7,6 +6,8 @@ import { useToast } from '@/hooks/use-toast';
 import { mintCoinArtwork } from '@/services/zoraMintService';
 import { Coins, Loader2, ExternalLink } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { useAccount } from 'wagmi';
 
 const Index = () => {
@@ -23,6 +24,9 @@ const Index = () => {
     initialSupply: string;
     viewUrl: string;
   } | null>(null);
+  const [artworkName, setArtworkName] = useState('My Digital Coin');
+  const [artworkDescription, setArtworkDescription] = useState('A unique coin artwork minted on Zora');
+  const [showMintDialog, setShowMintDialog] = useState(false);
 
   const handleCoinArtwork = async () => {
     if (!canvasDataUrl) {
@@ -39,8 +43,7 @@ const Index = () => {
       return;
     }
     
-    // Directly proceed with minting
-    await handleMintSubmit();
+    setShowMintDialog(true);
   };
 
   const handleMintSubmit = async () => {
@@ -49,8 +52,8 @@ const Index = () => {
     try {
       const result = await mintCoinArtwork({
         imageDataUrl: canvasDataUrl,
-        name: 'My Digital Coin',
-        description: 'A unique coin artwork minted on Zora'
+        name: artworkName,
+        description: artworkDescription
       });
       
       if (result.success) {
@@ -128,6 +131,65 @@ const Index = () => {
               className="mr-2"
             >
               Cancel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Coin Artwork</DialogTitle>
+            <DialogDescription>
+              Your artwork will be used as the visual for your unique digital coin.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Coin Name</Label>
+              <Input 
+                id="name" 
+                value={artworkName} 
+                onChange={(e) => setArtworkName(e.target.value)} 
+                placeholder="My Digital Coin"
+              />
+            </div>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description</Label>
+              <Input 
+                id="description" 
+                value={artworkDescription} 
+                onChange={(e) => setArtworkDescription(e.target.value)} 
+                placeholder="A unique coin artwork on Zora"
+              />
+            </div>
+            
+            {canvasDataUrl && (
+              <div className="flex justify-center">
+                <img 
+                  src={canvasDataUrl} 
+                  alt="Coin artwork preview" 
+                  className="max-w-full max-h-40 border rounded"
+                />
+              </div>
+            )}
+          </div>
+          
+          <div className="flex justify-end">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowMintDialog(false)} 
+              className="mr-2"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleMintSubmit} 
+              className="bg-purple-600 hover:bg-purple-700 text-white"
+            >
+              Create Coin
             </Button>
           </div>
         </DialogContent>
