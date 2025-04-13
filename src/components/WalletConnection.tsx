@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 const WalletConnection = () => {
   const { toast } = useToast();
   const { address, isConnected, status } = useAccount();
-  const { connectors, connect, error: connectError } = useConnect();
+  const { connectors, connect, error: connectError, isPending } = useConnect();
   const { disconnect } = useDisconnect();
 
   // Log connector details for debugging
@@ -17,13 +17,14 @@ const WalletConnection = () => {
     console.log('Connection Status:', status);
     
     if (connectError) {
+      console.error('Connection error:', connectError);
       toast({
         title: "Wallet Connection Error",
         description: connectError.message,
         variant: "destructive"
       });
     }
-  }, [connectors, status, connectError]);
+  }, [connectors, status, connectError, toast]);
 
   if (isConnected) {
     return (
@@ -44,24 +45,24 @@ const WalletConnection = () => {
     );
   }
 
+  // Find the WalletConnect connector
+  const walletConnector = connectors[0];
+  
   return (
     <div className="space-y-2">
-      {connectors.map((connector) => (
-        <Button
-          key={connector.id}
-          onClick={() => {
-            console.log(`Attempting to connect with ${connector.name}`);
-            connect({ connector });
-          }}
-          disabled={!connector.ready}
-          variant="outline"
-          className="flex items-center gap-2 w-full"
-        >
-          <Wallet className="h-4 w-4" />
-          Connect {connector.name}
-          {!connector.ready && ' (not installed)'}
-        </Button>
-      ))}
+      <Button
+        onClick={() => {
+          console.log('Initiating WalletConnect connection...');
+          connect({ connector: walletConnector });
+        }}
+        disabled={!walletConnector?.ready || isPending}
+        variant="outline"
+        className="flex items-center gap-2 w-full"
+      >
+        <Wallet className="h-4 w-4" />
+        {isPending ? 'Connecting...' : 'Connect Wallet'}
+        {!walletConnector?.ready && ' (not available)'}
+      </Button>
     </div>
   );
 };
