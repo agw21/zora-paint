@@ -1,5 +1,5 @@
 
-# Zora Paint: Digital Coin Artwork Creator
+# Zora Paint
 
 ## Project Overview
 
